@@ -1,7 +1,7 @@
 note
 	description: "Summary description for {ETF_SOFTWARE_OPERATION}."
-	author: "JSO"
-	date: "$Date$"
+	author: "Saher"
+	date: "2024-07-05"
 	revision: "$Revision$"
 
 class
