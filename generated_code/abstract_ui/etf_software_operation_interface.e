@@ -1,8 +1,8 @@
 note
-	description: "Operate abstract user interface"
-	author: "JSO and Jackie Wang"
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Defines an interface for operating an abstract user interface within ETF software."
+	author: "Saher"
+	date: "2024-07-01"
+	revision: "1.0"
 
 deferred class
 	ETF_SOFTWARE_OPERATION_INTERFACE
@@ -10,49 +10,55 @@ deferred class
 feature {NONE} -- Initialization
 
 	make
-			-- initialize input, output, ui
+			-- Initializes the input, output, and user interface attributes.
 		do
 			initialize_attributes
 		end
 
 	initialize_attributes
-			-- initialize attributes
-			-- and attach output handlers
+			-- Initializes attributes including the user interface, input handler, and output handler.
 		do
 			create output.make
-			  -- create user interface and attach command output handlers
-			create ui.make -- user interface		
-			  -- create empty default input handler
-			create input.make_without_running (dummy_command, ui)
+			create ui.make -- Creates and initializes the user interface.
+			create input.make_without_running(dummy_command, ui)
 		end
 
-feature -- attributes
+feature -- Attributes
 	ui				: ETF_ABSTRACT_UI
+		-- Represents the user interface used in the ETF software.
+
 	input			: ETF_INPUT_HANDLER
+		-- Handles input for the ETF software.
+
 	output			: ETF_CMD_LINE_OUTPUT_HANDLER
+		-- Handles output for command line interactions in the ETF software.
+
 	dummy_command	: STRING = ""
+		-- Dummy command used during initialization.
+
 	error			: BOOLEAN
+		-- Flag indicating if there are errors encountered.
 
 feature -- Commands
 
-	execute(cmds : STRING; is_init: BOOLEAN)
-			-- Parse input string `cmds' as a list of commands
+	execute(cmds: STRING; is_init: BOOLEAN)
+			-- Parses input string `cmds` as a list of commands.
 			-- If no input errors,
-			-- 		then execute commands and log to 'output'
-			-- 		note. when 'is_init', log the initial state
+			-- 		then executes commands and logs to 'output'.
+			-- 		If `is_init` is true, logs the initial state.
 			-- If errors,
-			-- 		then report errors to 'output'
+			-- 		then reports errors to 'output'.
 		do
 			initialize_attributes
 
-		    -- attach output handler log
-			ui.on_change.attach (agent output.log_command)
+			-- Attach output handler for command logging.
+			ui.on_change.attach(agent output.log_command)
 
-		    -- create an input parser and attach error output handler
+			-- Create an input parser and attach error output handler.
 			create input.make_without_running(cmds, ui)
-			input.on_error.attach (agent output.log_error)
+			input.on_error.attach(agent output.log_error)
 
-			-- parse and validate input
+			-- Parse and validate input.
 			input.parse_and_validate_input_string
 			if not input.etf_error then
 				if is_init then
@@ -64,23 +70,23 @@ feature -- Commands
 			end
 		end
 
-	execute_without_log(cmds : STRING)
-			-- Parse input string `cmds' as a list of commands
+	execute_without_log(cmds: STRING)
+			-- Parses input string `cmds` as a list of commands.
 			-- If no input errors,
-			-- 		then execute commands without writing to a log
+			-- 		then executes commands without writing to a log.
 			-- If errors,
-			-- 		then report errors to 'output'
+			-- 		then reports errors to 'output'.
 		do
 			initialize_attributes
 
-		    -- attach output handler log
-			ui.on_change.attach (agent output.log_empty)
+			-- Attach output handler for empty logging.
+			ui.on_change.attach(agent output.log_empty)
 
-		    -- create an input parser and attach error output handler
+			-- Create an input parser and attach error output handler.
 			create input.make_without_running(cmds, ui)
-			input.on_error.attach (agent output.log_error)
+			input.on_error.attach(agent output.log_error)
 
-			-- parse and validate input
+			-- Parse and validate input.
 			input.parse_and_validate_input_string
 			if not input.etf_error then
 				ui.run_input_commands
@@ -89,10 +95,3 @@ feature -- Commands
 			end
 		end
 end
-
-
-
-
-
-
-
