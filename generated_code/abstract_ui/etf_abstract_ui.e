@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {ETF_ABSTRACT_UI}."
-	author: "JSO"
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Defines an abstract user interface for managing ETF commands."
+	author: "Saher"
+	date: "2024-06-06"
+	revision: "1.3"
 
 class
 	ETF_ABSTRACT_UI
@@ -11,10 +11,3 @@ inherit
 create
 	make
 end
-
-
-
-
-
-
-
